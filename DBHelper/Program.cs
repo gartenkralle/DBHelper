@@ -14,15 +14,15 @@ namespace DBHelper
                 return;
             }
 
-            List<string> lines = ReadTableData(args[0], args[1]);
+            List<string> lines = ReadTableData(server: args[0], database: args[1]);
 
             if (args[2] == "getTables")
             {
-                PrintResult(GetTableDictionary(lines), args[3], "Tables");
+                PrintResult(GetTableDictionary(lines), key: args[3], "Tables");
             }
             else if (args[2] == "getColumns")
             {
-                PrintResult(GetColumnDictionary(lines), args[3], "Columns");
+                PrintResult(GetColumnDictionary(lines), key: args[3], "Columns");
             }
         }
 
@@ -45,17 +45,19 @@ namespace DBHelper
 
             foreach (string line in lines)
             {
-                string[] cols = line.Split(',');
+                string[] row = line.Split(',');
 
-                cols[1] = cols[1].Replace("\"", "").Trim().ToUpper();
+                string table = row[0];
+                string column = row[1].Replace("\"", "").Trim().ToUpper();
 
-                if (!result.ContainsKey(cols[1]))
+
+                if (!result.ContainsKey(column))
                 {
-                    result.Add(key: cols[1], new List<string>() { cols[0] });
+                    result.Add(key: column, new List<string>() { table });
                 }
                 else
                 {
-                    result[key: cols[1]].Add(cols[0]);
+                    result[key: column].Add(table);
                 }
             }
 
@@ -68,17 +70,18 @@ namespace DBHelper
 
             foreach (string line in lines)
             {
-                string[] cols = line.Split(',');
+                string[] row = line.Split(',');
 
-                cols[1] = cols[1].Replace("\"", "").Trim().ToUpper();
+                string table = row[0].Replace("\"", "").Trim().ToUpper();
+                string column = row[1].Trim();
 
-                if (!result.ContainsKey(cols[0]))
+                if (!result.ContainsKey(table))
                 {
-                    result.Add(key: cols[0], new List<string>() { cols[1] });
+                    result.Add(key: table, new List<string>() { column });
                 }
                 else
                 {
-                    result[key: cols[0]].Add(cols[1]);
+                    result[key: table].Add(column);
                 }
             }
 
@@ -95,16 +98,16 @@ namespace DBHelper
                 "where schema_name(tab.schema_id)='dbo' " +
                 "order by table_name, column_id;";
 
-            using (SqlConnection connection = new($"Data Source={server};Initial Catalog={database};Integrated Security=True"))
+            using (SqlConnection sqlConnection = new($"Data Source={server};Initial Catalog={database};Integrated Security=True"))
             {
-                SqlCommand command = new(queryString, connection);
-                connection.Open();
+                SqlCommand sqlCommand = new(queryString, sqlConnection);
+                sqlConnection.Open();
 
-                using SqlDataReader reader = command.ExecuteReader();
+                using SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
-                while (reader.Read())
+                while (sqlDataReader.Read())
                 {
-                    result.Add(string.Format("{0}, {1}", reader[0], reader[1]));
+                    result.Add(string.Format("{0}, {1}", sqlDataReader[0], sqlDataReader[1]));
                 }
             }
 
