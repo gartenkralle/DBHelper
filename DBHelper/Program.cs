@@ -107,7 +107,7 @@ namespace DBHelper
 
                 while (sqlDataReader.Read())
                 {
-                    result.Add(string.Format("{0}, {1}", sqlDataReader[0], sqlDataReader[1]));
+                    result.Add($"{sqlDataReader[0]}, {sqlDataReader[1]}");
                 }
             }
 
