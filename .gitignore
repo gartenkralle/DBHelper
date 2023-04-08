@@ -1,0 +1,17 @@
+obj/
+bin/
+.vs/
+*.dll
+*.osm
+*.bin
+*.idx
+*.user
+*.log
+*.crd
+*.csv
+*.exe
+*.pdb
+*.bak
+*.mmdb
+dotnet-tools.json
+*/Migrations/
