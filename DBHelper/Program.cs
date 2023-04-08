@@ -9,7 +9,7 @@ namespace DBHelper
             if (args.Length < 4)
             {
                 Console.WriteLine($"Call this program as follows: " +
-                            $"{AppDomain.CurrentDomain.FriendlyName}.exe server database getTables|getColumns column|table");
+                            $"{AppDomain.CurrentDomain.FriendlyName} server database getTables|getColumns column|table");
 
                 return;
             }
