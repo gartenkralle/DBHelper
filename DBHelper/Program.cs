@@ -8,8 +8,10 @@ namespace DBHelper
         {
             if (args.Length < 4)
             {
-                Console.WriteLine($"Call this program as follows: " +
-                            $"{AppDomain.CurrentDomain.FriendlyName} server database getTables|getColumns column|table");
+                Console.WriteLine($"Call this program as follows:" +
+                            $"{Environment.NewLine}{AppDomain.CurrentDomain.FriendlyName} server database getTables column" +
+                            $"{Environment.NewLine}or" +
+                            $"{Environment.NewLine}{AppDomain.CurrentDomain.FriendlyName} server database getColumns table");
 
                 return;
             }
@@ -49,7 +51,6 @@ namespace DBHelper
 
                 string table = row[0];
                 string column = row[1].Replace("\"", "").Trim().ToUpper();
-
 
                 if (!result.ContainsKey(column))
                 {
