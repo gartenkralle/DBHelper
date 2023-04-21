@@ -16,15 +16,22 @@ namespace DBHelper
                 return;
             }
 
-            List<string> lines = ReadTableData(server: args[0], database: args[1]);
+            try
+            {
+                List<string> lines = ReadTableData(server: args[0], database: args[1]);
 
-            if (args[2] == "getTables")
-            {
-                PrintResult(GetTableDictionary(lines), key: args[3], "Tables");
+                if (args[2] == "getTables")
+                {
+                    PrintResult(GetTableDictionary(lines), key: args[3], "Tables");
+                }
+                else if (args[2] == "getColumns")
+                {
+                    PrintResult(GetColumnDictionary(lines), key: args[3], "Columns");
+                }
             }
-            else if (args[2] == "getColumns")
+            catch (Exception ex)
             {
-                PrintResult(GetColumnDictionary(lines), key: args[3], "Columns");
+                Console.WriteLine(ex.Message);
             }
         }
 
