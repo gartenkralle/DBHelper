@@ -93,7 +93,7 @@ namespace DBHelper
         {
             List<string> result = new();
 
-            string queryString = "select table_name, column_name from INFORMATION_SCHEMA.COLUMNS";
+            string queryString = "SELECT table_name, column_name FROM INFORMATION_SCHEMA.COLUMNS INNER JOIN sys.tables ON table_name=name WHERE TABLE_SCHEMA='dbo'";
 
             using (SqlConnection sqlConnection = new($"Data Source={server};Initial Catalog={database};Integrated Security=True"))
             {
